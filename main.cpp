@@ -33,27 +33,33 @@ int main(int argc, char *argv[]) {
 	cv::cvtColor(img, lab_img, cv::COLOR_BGR2Lab);
 
 	// Extract green-red channel
-	cv::Mat_<cv::Vec<uchar, 1>> a_channel{};
+	cv::Mat_<uchar> a_channel{};
 	cv::extractChannel(lab_img, a_channel, LAB_A_CHAN_IDX);
-
 	int count{};
-	for (const auto &pxl : a_channel) {
-		// FIXME: doesn't work.
-		// if (pxl(0) < 0)
-		// 	count++;
 
-		count++;
+	for (uchar &pixel : a_channel) {
+		/*
+		 * 'Normalize' pixel:
+		 * We're dealing with uchars and values in CIELAB's a* channel are
+		 * represented via -128 to 127
+		 */
+		pixel = 255 - pixel;
+
+		if (pixel < 128)
+			count++;
 	}
+
+	// TODO: Merge back or some shit, I don't know.
 
 	std::println("Count: {}", count);
 
-	// cv::namedWindow(INPUT_WINNAME, cv::WINDOW_FREERATIO);
-	// cv::namedWindow(OUTPUT_WINNAME, cv::WINDOW_FREERATIO);
+	cv::namedWindow(INPUT_WINNAME, cv::WINDOW_FREERATIO);
+	cv::namedWindow(OUTPUT_WINNAME, cv::WINDOW_FREERATIO);
 
-	// cv::imshow(INPUT_WINNAME, img);
-	// cv::imshow(OUTPUT_WINNAME, a_channel);
-	// cv::waitKey(0);
+	cv::imshow(INPUT_WINNAME, img);
+	cv::imshow(OUTPUT_WINNAME, a_channel);
+	cv::waitKey(0);
 
-	// cv::destroyAllWindows();
+	cv::destroyAllWindows();
 	return 0;
 }
