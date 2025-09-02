@@ -5,7 +5,7 @@ Piss shrimple Computer Vision project that takes a green-screen image as input a
 ## Usage
 
 ```bash
-git clone https://github.com/masroof-maindak/GreenScreenWiper
+git clone https://github.com/masroof-maindak/GreenScreenWiper.git
 cd GreenScreenWiper
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release .. # Or 'Debug' if you want to hack away.
